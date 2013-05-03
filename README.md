@@ -2,9 +2,13 @@
 ## hey back!
 ### hey hey!
 
-'Code nigger'
-`code nigger`
+'Code nigger' <br>
+`code nigger` <br>
+
+`exports.index = function(req, res){
+  res.render('index', { title: 'Express' });
+};`
 
 - aufzaehlung
 	- level 2
-		- level 3
+		- level
