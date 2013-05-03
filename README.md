@@ -5,9 +5,11 @@
 'Code nigger' <br>
 `code nigger` <br>
 
-`exports.index = function(req, res){
+```javascript
+exports.index = function(req, res){ 
   res.render('index', { title: 'Express' });
-};`
+};
+```
 
 - aufzaehlung
 	- level 2
