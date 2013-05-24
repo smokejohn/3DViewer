@@ -39,10 +39,10 @@ Implementation of a 3D-Viewer NodeJS app, using Express, MongoDB, Mongoose and T
 
 
 * Research
-** read documentation and experiment with Express JS (framework) 
-** read ThreeJS documentation (viewer)
-** read MongoDB documentation (database)
-** read mongoose documentation (ODM for mongoDB database)
-** read Passport documentation (user authentification)
+  * read documentation and experiment with Express JS (framework) 
+  * read ThreeJS documentation (viewer)
+  * read MongoDB documentation (database)
+  * read mongoose documentation (ODM for mongoDB database)
+  * read Passport documentation (user authentification)
 
 
