@@ -37,7 +37,6 @@ Implementation of a 3D-Viewer NodeJS app, using Express, MongoDB, Mongoose and T
 * basic database document schema
 * test ThreeJS with OBJLoader
 
-
 * Research
   * read documentation and experiment with Express JS (framework) 
       * [http://expressjs.com/guide.html](http://expressjs.com/guide.html)
