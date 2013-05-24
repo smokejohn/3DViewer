@@ -35,7 +35,7 @@ Implementation of a 3D-Viewer NodeJS app, using Express, MongoDB, Mongoose and T
 * setup project, repository and dependencies
 * prototype basic file upload
 * basic database document schema
-* Test ThreeJS with OBJLoader
+* test ThreeJS with OBJLoader
 
 
 * Research
