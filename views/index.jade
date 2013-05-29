@@ -4,9 +4,10 @@ block content
 	h1= title
 	br
 	p Upload Form:
-	form(action="/upload", method="post", enctype="multipart/form-data")
-		input(type="file", name="modelFile")
-		br
-		input(type="submit")
-	br
-	a(href='/threeJS') View Model
+	div.span3.well
+		form(action="/upload", method="post", enctype="multipart/form-data")
+			input(type="file", name="modelFile", value="Choose File")
+			br
+			br
+			input.btn.btn-primary(type="submit", value="Send File")
+	div.clearfix
