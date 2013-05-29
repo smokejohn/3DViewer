@@ -50,15 +50,17 @@ exports.upload = function(req, res)
     });*/
 };
 
-
-
-
-
 exports.uploaded = function(req, res)
 {
 	res.setHeader('Content-Type', 'text/plain');
 	res.send("File Upload was Successful");
-
-	
-
 }
+
+
+exports.threeJS = function(req, res)
+{
+	res.render('threeJS', {title: '3DViewer'});
+}
+
+
+

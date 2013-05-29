@@ -36,6 +36,8 @@ app.get('/users', user.list);
 app.post('/upload', routes.upload);
 app.get('/uploaded', routes.uploaded);
 
+app.get('/threeJS', routes.threeJS);
+
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });
