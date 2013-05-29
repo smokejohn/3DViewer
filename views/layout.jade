@@ -1,8 +1,35 @@
 doctype 5
 html
   head
-    title= title
-    link(rel='stylesheet', href='/stylesheets/style.css')
-    script(src='/javascripts/jquery-1.10.0.min.js');
+    title=title
+    //link(rel='stylesheet', href='/stylesheets/style.css')
+    // Bootstrap
+    link(rel='stylesheet', href='/bootstrap/css/bootstrap.min.css')
+    link(rel='stylesheet', href='/bootstrap/css/bootstrap-responsive.min.css')
   body
-    block content
+    script(src='/javascripts/jquery-1.10.0.min.js')
+    script(src='/bootstrap/js/bootstrap.min.js')
+    div.navbar.navbar-fixed-top
+      div.navbar-inner
+        div.container
+          button(type='button')(data-toggle='collapse')(data-target='.nav-collapse').btn.btn-navbar
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
+          a(href='/').brand 3DViewer
+          div.nav-collapse.collapse
+            ul.nav
+              li
+                a(href='/user/signup') Sign up
+              li
+                a(href='/user/login') Sign in
+              li
+                a(href='/users') Userlist
+              li
+                a(href='/threeJS') 3D Viewer
+            ul.nav.pull-right
+              li
+                a(href='/logout') Logout
+    div.container
+      div.hero-unit
+        block content
