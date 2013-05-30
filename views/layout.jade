@@ -29,6 +29,11 @@ html
                 a(href='/threeJS') 3D Viewer
             ul.nav.pull-right
               li
+                if currentUser.username
+                  h6.label.label-info logged in as <em>#{currentUser.username}</em>
+                else
+                  h6 not logged in
+              li
                 a(href='/user/logout') Logout
     div.container
       div.hero-unit

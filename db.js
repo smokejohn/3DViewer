@@ -4,34 +4,41 @@ mongoose.connect('mongodb://localhost/test');
 var db = mongoose.connection
 db.on('error', console.error.bind(console, 'connection error'));
 db.once('open', function callback(){
+	console.log("database connection successfull!");
+
+	// Database Schemes
+
+	// USER
+	var userSchema = mongoose.Schema({
+		username: { type: String, required: true, index: { unique: true }},
+		password: { type: String, required: true},
+		email: { type: String, required: true}
+	});
+
+	// USER FUNCTIONS
+
+	userSchema.methods.validPassword = function (password) {
+		return this.password === password; 
+	};
 
 
-// Database Schemes
-
-// USER
-var userSchema = mongoose.Schema({
-	username: { type: String, required: true, index: { unique: true }},
-	password: { type: String, required: true},
-	email: { type: String, required: true}
-});
-
-// USERLIST
-var userlistSchema = mongoose.Schema({
-	userID : { type: ObjectId, required: true }
-});
+	// USERLIST
+	var userlistSchema = mongoose.Schema({
+		userID : { type: String, required: true }
+	});
 
 
-// Database Models
+	// Database Models
 
-// USER
-var User = mongoose.model('User', userSchema);
+	// USER
+	var User = mongoose.model('User', userSchema);
 
-// USERLIST
-var UserList = mongoose.model('UserList', userlistSchema);
+	// USERLIST
+	var UserList = mongoose.model('UserList', userlistSchema);
 
-//Exports
-exports.User = User;
-exports.UserList = UserList;
+	//Exports
+	exports.User = User;
+	exports.UserList = UserList;
 
 });
 
