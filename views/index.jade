@@ -2,12 +2,11 @@ extends layout
 
 block content
 	h1= title
+	//h4 Welcome to #{title}, please Sign in to upload files
 	br
 	p Upload Form:
-	div.span3.well
-		form(action="/upload", method="post", enctype="multipart/form-data")
-			input(type="file", name="modelFile", value="Choose File")
-			br
-			br
-			input.btn.btn-primary(type="submit", value="Send File")
-	div.clearfix
+	form(action="/upload", method="post", enctype="multipart/form-data")
+		input(type="file", name="modelFile", value="Choose File")
+		br
+		br
+		input.btn.btn-primary(type="submit", value="Send File")

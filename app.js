@@ -7,7 +7,8 @@ var express = require('express')
   , routes = require('./routes')
   , user = require('./routes/user')
   , http = require('http')
-  , path = require('path');
+  , path = require('path')
+	, db = require('./db');
 
 var app = express();
 
@@ -29,14 +30,21 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
+// Get Requests
 app.get('/', routes.index);
 app.get('/users', user.list);
-
-
-app.post('/upload', routes.upload);
 app.get('/uploaded', routes.uploaded);
-
 app.get('/threeJS', routes.threeJS);
+app.get('/user/signup', user.signup);
+app.get('/user/signin', user.signin);
+app.get('/user/logout', function(req, res){res.redirect('back');});
+
+
+// Post Requests
+app.post('/upload', routes.upload);
+app.post('/user/register', user.register);
+app.post('/user/login', user.login);
+
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
