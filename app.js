@@ -10,14 +10,20 @@ var express = require('express')
   , path = require('path')
 	, db = require('./db')
 	, passport = require('passport')
-	, LocalStrategy = require('passport-local').Strategy;
+	, LocalStrategy = require('passport-local').Strategy
+	,	flash = require('connect-flash');
 
 // PASSPORT SETUP
 passport.use(new LocalStrategy(
   function(username, password, done) {
     db.User.findOne({ username: username }, function (err, user) {
       if (err) { return done(err); }
-      if (!user) {
+			if (user) {
+				if (user.registered === false){
+					return done(null, false, { message: 'User not activated. Check your e-mail' });
+				}
+			}
+			if (!user) {
         return done(null, false, { message: 'Incorrect username.' });
       }
       if (!user.validPassword(password)) {
@@ -54,6 +60,7 @@ app.use(express.methodOverride());
   app.use(express.session());
 	app.use(passport.initialize());
   app.use(passport.session());
+	app.use(flash());
 	app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -80,13 +87,16 @@ app.get('/threeJS', currentUser, routes.threeJS);
 app.get('/user/signup', currentUser, user.signup);
 app.get('/user/signin', currentUser, user.signin);
 app.get('/user/logout', currentUser, function(req, res){req.logout(); res.redirect('back');});
+app.get('/user/activationmail', currentUser, user.activationmail);
+app.get('/user/activate_user/:id', currentUser, user.activateuser);
 
 
 // Post Requests
 app.post('/upload', routes.upload);
 app.post('/user/register', user.register);
 app.post('/user/login', passport.authenticate('local', { successRedirect: '/',
-																												 failureRedirect: '/user/signin' }));
+																												 failureRedirect: '/user/signin',
+																												 failureFlash: true }));
 
 
 http.createServer(app).listen(app.get('port'), function(){

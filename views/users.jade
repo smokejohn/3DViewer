@@ -12,6 +12,7 @@ block content
 					th #
 					th Username
 					th E-Mail
+					th created at
 			tbody
 				for user in users
 					- number++;
@@ -19,7 +20,4 @@ block content
 						td= number
 						td= user.username
 						td= user.email
-
-	//ul
-	//	for user in users
-	//		li= user.username
+						td= user.created

@@ -11,6 +11,8 @@
 		"mongoose": "*",
 		"passport": "*",
 		"passport-local": "*",
-		"nodemailer": "*"
+		"nodemailer": "*",
+		"async": "*",
+		"connect-flash": "*"
   }
 }

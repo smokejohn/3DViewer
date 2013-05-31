@@ -6,6 +6,10 @@ html
     // Bootstrap
     link(rel='stylesheet', href='/bootstrap/css/bootstrap.min.css')
     link(rel='stylesheet', href='/bootstrap/css/bootstrap-responsive.min.css')
+    style(type="text/css")
+      .no-space{
+      margin-left: 0;
+      }
   body
     script(src='/javascripts/jquery-1.10.0.min.js')
     script(src='/bootstrap/js/bootstrap.min.js')
@@ -17,6 +21,7 @@ html
             span.icon-bar
             span.icon-bar
           a(href='/').brand 3DViewer
+
           div.nav-collapse.collapse
             ul.nav
               li
@@ -29,12 +34,11 @@ html
                 a(href='/threeJS') 3D Viewer
             ul.nav.pull-right
               li
-                if currentUser.username
-                  h6.label.label-info logged in as <em>#{currentUser.username}</em>
-                else
-                  h6 not logged in
-              li
                 a(href='/user/logout') Logout
+          if currentUser.username
+            h6.label.label-info.pull-right logged in as <em>#{currentUser.username}</em>
+          else
+            h6.pull-right not logged in
     div.container
       div.hero-unit
         block content

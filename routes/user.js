@@ -1,5 +1,6 @@
 var db = require("../db");
 var mailer = require("../mailer");
+var async = require("async");
 
 /*
  * GET 
@@ -9,7 +10,7 @@ exports.list = function(req, res){
 
 	var query = db.User.find();
 
-	query.select('username email');
+	query.select('username email created');
 
   query.exec(function(err, users){
 		if (err)
@@ -21,11 +22,12 @@ exports.list = function(req, res){
 };
 
 exports.signup = function(req, res){
-	res.render('signup', { title: "SignUp"});
+	res.render('signup', { title: "SignUp", message: req.flash('error')});
 };
 
 exports.signin = function(req, res){
-	res.render('signin', { title: "SignIn"});
+	res.render('signin', { title: "SignIn", message: req.flash('error')});
+	console.log(req.flash('error'));
 };
 
 /*
@@ -36,6 +38,7 @@ exports.register = function(req, res){
 
 	if( req.body.username === '' || req.body.password === '' || req.body.email === '')	
 	{
+		req.flash('error', 'Missing credentials');
 		res.redirect('back');
 	}
 	else
@@ -48,28 +51,71 @@ exports.register = function(req, res){
 				throw err
 			else if (quser[0] === undefined)
 			{
-				mailer.sendMail(req.body.email, '<a href="www.google.com">Test HTML<a/>');
 				
+			
 				var user = new db.User({ 
 					username: req.body.username,
 					password: req.body.password,
 					email: req.body.email});
 
-				user.save(function (err, user){
-					if (err)
-						throw err;
-					else
-						console.log("User " + user.username + " was saved");
-						res.redirect('/');
-				});
-			
+				async.series([
+				function (callback){
+					user.save(function (err, user){
+						if (err)
+							throw err;
+						else
+							console.log("User " + user.username + " was saved");
+					});
+
+					callback(null);
+				},
+				function (callback){
+					async.waterfall([
+						function(callback){
+							db.User.findOne({ username: req.body.username }, function(err, user){
+								if (err) throw err;
+								
+									console.log(user)
+									callback(null, user._id);
+								});
+						
+							},
+							function(id, callback){
+								var mailbody = "<h2>Welcome to 3DViewer</h2></br></br><a href='http://localhost:3000/user/activate_user/" + id +"'>Activation Link</a>";
+								mailer.sendMail(req.body.email, mailbody);
+								res.redirect('/user/activationmail');
+								callback(null, 'done');
+							}
+						]);
+					}
+				]);
 			}
 			else
+				req.flash('error', 'Username already in use');
 				res.redirect('back');
 		});
 	}
 };
 
+
+exports.activationmail = function(req, res){
+	res.render('activationmail', {title: '3DViewer'});
+}
+
+
 exports.login = function(req, res){
 	
 };
+
+exports.activateuser = function(req, res){
+	
+	
+	db.User.update({_id: req.params.id}, { $set: { registered: true}}, function(err){
+	if (err) throw err;
+	else
+		console.log("User registered!");
+
+	});
+
+	res.render('activateuser', {title: '3DViewer'});
+}
