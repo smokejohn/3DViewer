@@ -1,4 +1,5 @@
 var db = require("../db");
+var mailer = require("../mailer");
 
 /*
  * GET 
@@ -47,6 +48,8 @@ exports.register = function(req, res){
 				throw err
 			else if (quser[0] === undefined)
 			{
+				mailer.sendMail(req.body.email, '<a href="www.google.com">Test HTML<a/>');
+				
 				var user = new db.User({ 
 					username: req.body.username,
 					password: req.body.password,
