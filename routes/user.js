@@ -90,9 +90,10 @@ exports.register = function(req, res){
 					}
 				]);
 			}
-			else
+			else{
 				req.flash('error', 'Username already in use');
 				res.redirect('back');
+			}
 		});
 	}
 };
