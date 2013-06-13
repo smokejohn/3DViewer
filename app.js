@@ -13,6 +13,7 @@ var express = require('express')
 	, LocalStrategy = require('passport-local').Strategy
 	,	flash = require('connect-flash');
 
+
 // PASSPORT SETUP
 passport.use(new LocalStrategy(
   function(username, password, done) {
