@@ -10,11 +10,11 @@ db.once('open', function callback(){
 
 	// USER
 	var userSchema = mongoose.Schema({
-		username: {type: String, required: true, index: { unique: true }},
-		password: {type: String, required: true},
-		email: {type: String, required: true},
-		registered: {type: Boolean, default: false},
-		created: {type: Date, default: Date.now}
+		username: { type: String, required: true, index: { unique: true }},
+		password: { type: String, required: true },
+		email: { type: String, required: true },
+		registered: { type: Boolean, default: false },
+		created: { type: Date, default: Date.now }
 	});
 
 	// USER FUNCTIONS
@@ -28,8 +28,17 @@ db.once('open', function callback(){
 	var userlistSchema = mongoose.Schema({
 		userID : { type: String, required: true }
 	});
-
-
+    
+    // USERMODEL
+    
+    var usermodelSchema = mongoose.Schema({
+    
+        name: { type: String, required: true, index: { unique: true }},
+        owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+        path: { type: String, required: true},
+        desc: { type: String}
+    });
+    
 	// Database Models
 
 	// USER
