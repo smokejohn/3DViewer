@@ -1,7 +1,7 @@
 $(document).ready(function() {
 
 	var container, stats;
-	var camera, scene, renderer;
+	var camera, controls, scene, renderer;
 	var mouseX = 0, mouseY = 0;
 	var windowHalfX = 900 / 2;
 	var windowHalfY = 500 / 2;
@@ -11,15 +11,22 @@ $(document).ready(function() {
 
 	function init() {
 
+
+        
+        
 		container = document.getElementById('container3D')
 		//container = document.createElement( 'container' );
 		//document.body.appendChild( container );
 		camera = new THREE.PerspectiveCamera( 45, 900 / 500, 1, 2000 );
 		camera.position.z = 100;
-
+        
+        controls = new THREE.OrbitControls( camera );
+        controls.addEventListener( 'change', render );
+        
 		// scene
 		scene = new THREE.Scene();
 
+        // lights
 		var ambient = new THREE.AmbientLight( 0x101030 );
 		scene.add( ambient );
 
@@ -63,55 +70,29 @@ $(document).ready(function() {
 		});
 		loader.load( 'files/Cube.obj' );
 
-		//
+		// renderer
 
 		renderer = new THREE.WebGLRenderer();
 		renderer.setSize( 900, 500 );
 		renderer.setClearColor(0x444444, 1)
 		container.appendChild( renderer.domElement );
 
-		container.addEventListener( 'mousemove', onDocumentMouseMove, false );
 
-		//
 
-		//window.addEventListener( 'resize', onWindowResize, false );
+
 
 	}
-	/*
-	function onWindowResize() {
+	
 
-		windowHalfX = window.innerWidth / 2;
-		windowHalfY = window.innerHeight / 2;
-
-		camera.aspect = window.innerWidth / window.innerHeight;
-		camera.updateProjectionMatrix();
-
-		renderer.setSize( window.innerWidth, window.innerHeight );
-
-	}
-	*/
-	function onDocumentMouseMove( event ) {
-
-		mouseX = ( event.clientX - windowHalfX ) / 2;
-		mouseY = ( event.clientY - windowHalfY ) / 2;
-
-	}
-
-	//
 
 	function animate() {
 
 		requestAnimationFrame( animate );
-		render();
-
+        controls.update();
+		
 	}
 
 	function render() {
-
-		camera.position.x += ( mouseX - camera.position.x ) * .05;
-		camera.position.y += ( - mouseY - camera.position.y ) * .05;
-
-		camera.lookAt( scene.position );
 
 		renderer.render( scene, camera );
 
