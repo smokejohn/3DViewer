@@ -1,19 +1,24 @@
 extends layout
 
 block content
-	h1= title
-	br
-	if currentUser.username
-		h4 Welcome <em>#{currentUser.username}</em>, use the form below to upload your files
-		br
-		p Upload Form:
-		form(action="/upload", method="post", enctype="multipart/form-data")
-			fieldset
-				div.well.span4.no-space
-					input(type="file", name="modelFile", value="Choose File")
-					br
-					br
-					input.btn.btn-primary(type="submit", value="Send File")
-	else
-		h4 Welcome to #{title}, please Sign in to upload files
+    h1= title
+    br
+    if currentUser.username
+        h4 Welcome <em>#{currentUser.username}</em>, use the form below to upload your files
+        br
+        if (message[0])	
+            div.alert.alert-error
+                a.close(data-dismiss="alert", href="#")×
+                h6=message
+        br
+        p Upload Form:
+        form(action="/upload", method="post", enctype="multipart/form-data")
+            fieldset
+                div.well.span4.no-space
+                    input(type="file", name="modelFile", value="Choose File")
+                    br
+                    br
+                    input.btn.btn-primary(type="submit", value="Send File")
+    else
+        h4 Welcome to #{title}, please Sign in to upload files
 

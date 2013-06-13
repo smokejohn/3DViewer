@@ -30,6 +30,25 @@ exports.signin = function(req, res){
 	console.log(req.flash('error'));
 };
 
+
+exports.activationmail = function(req, res){
+	res.render('activationmail', {title: '3D-Viewer'});
+}
+
+
+exports.activateuser = function(req, res){
+	
+	
+	db.User.update({_id: req.params.id}, { $set: { registered: true}}, function(err){
+	if (err) throw err;
+	else
+		console.log("User registered!");
+
+	});
+
+	res.render('activateuser', {title: '3D-Viewer'});
+}
+
 /*
  * POST 
  */
@@ -81,7 +100,7 @@ exports.register = function(req, res){
 						
 							},
 							function(id, callback){
-								var mailbody = "<h2>Welcome to 3DViewer</h2></br></br><a href='http://localhost:3000/user/activate_user/" + id +"'>Activation Link</a>";
+								var mailbody = "<h2>Welcome to 3D-Viewer</h2></br></br><p>To finish your registration, click the activation Link below</p></br></br><a href='http://localhost:3000/user/activate_user/" + id +"'>Activation Link</a>";
 								mailer.sendMail(req.body.email, mailbody);
 								res.redirect('/user/activationmail');
 								callback(null, 'done');
@@ -99,24 +118,3 @@ exports.register = function(req, res){
 };
 
 
-exports.activationmail = function(req, res){
-	res.render('activationmail', {title: '3DViewer'});
-}
-
-
-exports.login = function(req, res){
-	
-};
-
-exports.activateuser = function(req, res){
-	
-	
-	db.User.update({_id: req.params.id}, { $set: { registered: true}}, function(err){
-	if (err) throw err;
-	else
-		console.log("User registered!");
-
-	});
-
-	res.render('activateuser', {title: '3DViewer'});
-}
