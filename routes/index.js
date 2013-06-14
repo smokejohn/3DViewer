@@ -5,49 +5,136 @@
 var fs = require('fs');
 var util = require('util');
 var path = require('path');
+var db = require('../db');
+var async = require('async');
 
 exports.index = function(req, res){
     res.render('index', { title: '3DViewer', message: req.flash('error')});
+    if (req.user)    
+        console.log(req.user._id);
 };
 
 exports.upload = function(req, res)
 {
-    // get the temporary location of the file
-    var tmp_path = req.files.modelFile.path;
-    // set where the file should actually exists - in this case it is in the "files" directory
-    var target_path = 'public/files/' + req.files.modelFile.name;
+
+    async.waterfall([
     
-    console.log(path.extname(req.files.modelFile.name));
-    
-    // pipe file content to new File in target path
-    if(path.extname(req.files.modelFile.name) == '.obj')
-    {
-    
-        // have to use Streams to be sure moving/copying of files works cross partitions || cross disks
-        // InputStream (is) and OutputStream (os)
-        var is = fs.createReadStream(tmp_path);
-        var os = fs.createWriteStream(target_path);
-    
-        is.pipe(os);
-    
-        // listen for EOF in InputStream(is)
-        is.on('end', function(){
-            // delete file in tmp path
-            fs.unlink(tmp_path, function(err){
-                if (err) throw err;
-                res.send('File uploaded to: ' + target_path + ' - ' + req.files.modelFile.size + ' bytes');
-    
+        function(callback){
+            
+           // Set Users Model Directory
+            db.User.findById(req.user._id, function(err, user){
+                if(err) 
+                    throw err;
+                else{
+                    user.userpath = "files/" + user._id;
+                    user.save();
+                    console.log("User: %s's Userpath was set to %s", user.username, user.userpath);
+                    callback(null, user.userpath);
+                } 
             });
+            
+        },
+        function(userpath, callback){
+        
+        
+            console.log(path.extname(req.files.modelFile.name));
+            console.log(userpath);
+            
+            // CREATE DIRECTORY
+            // Check if Directory already exists for User, if not create one
+            fs.stat(userpath, function(err, stats){
+                if(err && err.code != 'ENOENT')
+                    throw err;
+                else if(err && err.code == 'ENOENT')
+                {
+                    fs.mkdir(userpath,'0777', function(err){
+                        if(err) 
+                            throw err;
+                        else 
+                            console.log("Directory %s created!", userpath);            
+                    });                      
+                }
+                else
+                    console.log("Directory %s already exists!", userpath);
+            });
+           
+                    
+            // UPLOAD
+            
+            // pipe file content to new File in target path
+            if(path.extname(req.files.modelFile.name) == '.obj')
+            {
+                // get the temporary location of the file
+                var tmp_path = req.files.modelFile.path;
+                // set where the file should actually exists - in this case it is in the "files" directory
+                var target_path = userpath + "/" + req.files.modelFile.name;
+              
+                // have to use Streams to be sure moving/copying of files works cross partitions || cross disks
+                // InputStream (is) and OutputStream (os)
+                var is = fs.createReadStream(tmp_path);
+                var os = fs.createWriteStream(target_path);
+    
+                // pipe data to new location
+                is.pipe(os);
+    
+                // listen for EOF in InputStream(is)
+                is.on('end', function(){
+                    // delete file in tmp path
+                    fs.unlink(tmp_path, function(err){
+                        if (err) throw err;
+                        res.send('File uploaded to: ' + target_path + ' - ' + req.files.modelFile.size + ' bytes');
+                    });
+                });
+            }
+            else
+            {
+                req.flash('error', 'Wrong Filetype, please upload .obj');
+                res.redirect('back');
+            }
+
+            callback(null, userpath);
+        
+        },
+        
+        function(userpath, callback)
+        {
+            db.UserModel.find({ name: req.files.modelFile.name }, function(err, model){
+            console.log(model);
+            if(model[0] === undefined)
+            {
+                var Model3d = new db.UserModel({
+                    name: req.files.modelFile.name,
+                    owner: req.user._id,
+                    path: userpath,
+                    desc: "lalallalalalala 3D"});
+                            
+                Model3d.save(function(err){
+                    if(err)
+                        throw err;
+                    else
+                        console.log("Model %s has been saved", req.files.modelFile.name);            
+                }); 
+            }
+            else
+            {
+                model.desc = "lalalalallalal 3D";
+                console.log("Model %s exists, and has been updated", req.files.modelFile.name);
+            }
         });
-    }
-    else
-    {
-        req.flash('error', 'Wrong Filetype, please upload .obj');
-		res.redirect('back');
-    }
-    
-    
-    
+
+            
+            callback(null, "done");
+        }], 
+        
+        function (err, result) {
+            if(err)
+                throw err;
+            else    
+                console.log(result);
+        }
+    );
+
+ 
     // old implementation, with fs.rename doesnt work cross partition || cross disk
     /*
     fs.rename(tmp_path, target_path, function(err) {

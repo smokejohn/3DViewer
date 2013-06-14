@@ -95,9 +95,7 @@ app.get('/user/activate_user/:id', currentUser, user.activateuser);
 // Post Requests
 app.post('/upload', routes.upload);
 app.post('/user/register', user.register);
-app.post('/user/login', passport.authenticate('local', { successRedirect: '/',
-																												 failureRedirect: '/user/signin',
-																												 failureFlash: true }));
+app.post('/user/login', passport.authenticate('local', { successRedirect: '/', failureRedirect: '/user/signin',	failureFlash: true }));
 
 
 http.createServer(app).listen(app.get('port'), function(){

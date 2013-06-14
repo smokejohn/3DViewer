@@ -2,6 +2,7 @@ var db = require("../db");
 var mailer = require("../mailer");
 var async = require("async");
 
+
 /*
  * GET 
  */
@@ -78,24 +79,23 @@ exports.register = function(req, res){
 					email: req.body.email});
 
 				async.series([
-				function (callback){
-					user.save(function (err, user){
-						if (err)
-							throw err;
-						else
-							console.log("User " + user.username + " was saved");
+                    function (callback){
+                        user.save(function (err, user){
+                            if (err)
+                                throw err;
+                            else
+                                console.log("User " + user.username + " was saved");
 					});
 
 					callback(null);
-				},
-				function (callback){
-					async.waterfall([
-						function(callback){
-							db.User.findOne({ username: req.body.username }, function(err, user){
-								if (err) throw err;
-								
+                    },
+                    function (callback){
+                        async.waterfall([
+                            function(callback){
+                                db.User.findOne({ username: req.body.username }, function(err, user){
+                                    if (err) throw err;
 									console.log(user)
-									callback(null, user._id);
+                                    callback(null, user._id);
 								});
 						
 							},
@@ -116,5 +116,9 @@ exports.register = function(req, res){
 		});
 	}
 };
+
+
+    
+    
 
 

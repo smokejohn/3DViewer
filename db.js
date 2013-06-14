@@ -14,7 +14,9 @@ db.once('open', function callback(){
 		password: { type: String, required: true },
 		email: { type: String, required: true },
 		registered: { type: Boolean, default: false },
+        userpath: { type: String, default: 'files/unregistered'},
 		created: { type: Date, default: Date.now }
+       
 	});
 
 	// USER FUNCTIONS
@@ -32,8 +34,7 @@ db.once('open', function callback(){
     // USERMODEL
     
     var usermodelSchema = mongoose.Schema({
-    
-        name: { type: String, required: true, index: { unique: true }},
+        name: { type: String, required: true },
         owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
         path: { type: String, required: true},
         desc: { type: String}
@@ -46,10 +47,13 @@ db.once('open', function callback(){
 
 	// USERLIST
 	var UserList = mongoose.model('UserList', userlistSchema);
-
+    
+    var UserModel = mongoose.model('UserModel', usermodelSchema);
+    
 	//Exports
 	exports.User = User;
 	exports.UserList = UserList;
+    exports.UserModel = UserModel;
 
 });
 
