@@ -26,6 +26,7 @@ html
                 li
                   a(href='/threeJS') 3D Viewer
             ul.nav.pull-right
+              - console.log("Hure=" + currentUser);
               if currentUser.username
                 li.dropdown
                   a(href="#", data-toggle="dropdown").dropdown-toggle #{currentUser.username}

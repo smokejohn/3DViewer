@@ -12,6 +12,7 @@ exports.index = function(req, res){
     res.render('index', { title: '3DViewer', message: req.flash('error')});
     if (req.user)    
         console.log(req.user._id);
+    console.log(res.locals.currentUser);
 };
 
 exports.upload = function(req, res)

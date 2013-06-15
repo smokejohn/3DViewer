@@ -12,7 +12,7 @@ function sendMail (usermail, mailbody) {
 	});
 
 	var mailOptions = {
-		from: '3DViewer <3dviwr@gmail.com>',
+        from: '3DViewer <3dviwr@gmail.com>',
 		to: usermail,
 		subject: 'register@3DViewer',
 		text:	mailbody,

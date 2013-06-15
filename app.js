@@ -68,16 +68,20 @@ app.use(express.static(path.join(__dirname, 'public')));
 // development only
 if ('development' == app.get('env')) {
   app.use(express.errorHandler());
-}
+};
 
 currentUser = function (req, res, next)
 {
-	if (req.user !== undefined)
+	if (req.user === undefined)
 	{
-		res.locals.currentUser = req.user;
+		console.log("User not set");
 	}
+    else
+    {
+        res.locals.currentUser = req.user;    
+    }
 	next();
-}
+};
 
 
 // Get Requests
