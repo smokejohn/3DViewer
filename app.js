@@ -11,8 +11,8 @@ var express = require('express')
 	, db = require('./db')
 	, passport = require('passport')
 	, LocalStrategy = require('passport-local').Strategy
-	,	flash = require('connect-flash');
-
+	, flash = require('connect-flash')
+    , io = require('socket.io');
 
 // PASSPORT SETUP
 passport.use(new LocalStrategy(
@@ -34,6 +34,7 @@ passport.use(new LocalStrategy(
     });
   }
 ));
+
 
 passport.serializeUser(function(user, done) {
   done(null, user.id);
@@ -103,6 +104,21 @@ app.post('/user/register', user.register);
 app.post('/user/login', passport.authenticate('local', { successRedirect: '/', failureRedirect: '/user/signin',	failureFlash: true }));
 
 
+
+/*
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });
+*/
+
+
+// integrate Socket.io Layer
+http.createServer();
+
+io.listen(app.listen(app.get('port'), function()
+{
+    console.log('Express server listening on port ' + app.get('port'));
+}));
+
+
+

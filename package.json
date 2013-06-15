@@ -13,6 +13,7 @@
 		"passport-local": "*",
 		"nodemailer": "*",
 		"async": "*",
-		"connect-flash": "*"
+		"connect-flash": "*",
+        "socket.io": "*"
   }
 }
