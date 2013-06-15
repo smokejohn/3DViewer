@@ -13,21 +13,33 @@ exports.list = function(req, res){
 
 	query.select('username email created');
 
-  query.exec(function(err, users){
+    query.exec(function(err, users){
 		if (err)
 			throw err;
 		else
 			res.render('users', { title: "Users", users: users });
-});
+    });
 
 };
 
+exports.dashboard = function(req, res){
+
+
+    db.UserModel.find({ 'owner': req.user._id }, function(err, models){
+        if(err)
+            throw err;
+        else
+            res.render('dashboard', { title: 'Dashboard', models: models});
+        
+    });
+}
+
 exports.signup = function(req, res){
-	res.render('signup', { title: "SignUp", message: req.flash('error')});
+	res.render('signup', { title: 'SignUp', message: req.flash('error')});
 };
 
 exports.signin = function(req, res){
-	res.render('signin', { title: "SignIn", message: req.flash('error')});
+	res.render('signin', { title: 'SignIn', message: req.flash('error')});
 	console.log(req.flash('error'));
 };
 

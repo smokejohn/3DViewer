@@ -1,0 +1,21 @@
+extends layout
+
+block content
+    h1= title
+    br
+    p List of all registered Users
+    - var number = 0;
+    div.well
+        table.table
+            thead
+                tr
+                    th #
+                    th Modelname
+                    th created at
+            tbody
+                for model in models
+                    - number++;
+                    tr
+                        td= number
+                        td= model.name
+                        td= model.created

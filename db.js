@@ -37,7 +37,8 @@ db.once('open', function callback(){
         name: { type: String, required: true },
         owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
         path: { type: String, required: true},
-        desc: { type: String}
+        desc: { type: String},
+        created: { type: Date, default: Date.now }
     });
     
 	// Database Models

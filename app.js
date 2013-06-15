@@ -91,9 +91,10 @@ app.get('/uploaded', currentUser, routes.uploaded);
 app.get('/threeJS', currentUser, routes.threeJS);
 app.get('/user/signup', currentUser, user.signup);
 app.get('/user/signin', currentUser, user.signin);
-app.get('/user/logout', currentUser, function(req, res){req.logout(); res.redirect('back');});
+app.get('/user/logout', currentUser, function(req, res){req.logout(); res.redirect('/');});
 app.get('/user/activationmail', currentUser, user.activationmail);
 app.get('/user/activate_user/:id', currentUser, user.activateuser);
+app.get('/user/dashboard', currentUser, user.dashboard);
 
 
 // Post Requests

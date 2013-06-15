@@ -30,16 +30,17 @@ exports.upload = function(req, res)
                     user.userpath = "files/" + user._id;
                     user.save();
                     console.log("User: %s's Userpath was set to %s", user.username, user.userpath);
-                    callback(null, user.userpath);
                 } 
+                callback(err, user.userpath);
             });
             
         },
         function(userpath, callback){
-        
-        
+            
             console.log(path.extname(req.files.modelFile.name));
             console.log(userpath);
+            
+            var bExists;
             
             // CREATE DIRECTORY
             // Check if Directory already exists for User, if not create one
@@ -48,16 +49,31 @@ exports.upload = function(req, res)
                     throw err;
                 else if(err && err.code == 'ENOENT')
                 {
-                    fs.mkdir(userpath,'0777', function(err){
-                        if(err) 
-                            throw err;
-                        else 
-                            console.log("Directory %s created!", userpath);            
-                    });                      
+                    bExists = false;             
                 }
-                else
-                    console.log("Directory %s already exists!", userpath);
+                else{
+                    bExists = true;
+                }
+                callback(null, userpath, bExists);
             });
+        },
+        function(userpath, exists, callback){
+        
+            if(!exists){
+                fs.mkdir(userpath, function(err){
+                    if(err) 
+                        throw err;
+                    else 
+                        console.log("Directory %s created!", userpath);            
+                });       
+            }
+            else
+                console.log("Directory %s already exists!", userpath);
+            callback(null, userpath);
+        },
+        function(userpath, callback){
+        
+ 
            
                     
             // UPLOAD
@@ -96,37 +112,38 @@ exports.upload = function(req, res)
             callback(null, userpath);
         
         },
-        
         function(userpath, callback)
         {
-            db.UserModel.find({ name: req.files.modelFile.name }, function(err, model){
-            console.log(model);
-            if(model[0] === undefined)
-            {
-                var Model3d = new db.UserModel({
-                    name: req.files.modelFile.name,
-                    owner: req.user._id,
-                    path: userpath,
-                    desc: "lalallalalalala 3D"});
+            var query = db.UserModel.find({ name: req.files.modelFile.name });
+            query.where('owner').equals(req.user._id);
+            
+            query.exec(function(err, model){
+                console.log( "DBQuery for Modelname: " + model );
+                if(model[0] === undefined)
+                {
+                    var Model3d = new db.UserModel({
+                        name: req.files.modelFile.name,
+                        owner: req.user._id,
+                        path: userpath,
+                        desc: "lalallalalalala 3D",
+                        created: Date.now() });
                             
-                Model3d.save(function(err){
-                    if(err)
-                        throw err;
-                    else
-                        console.log("Model %s has been saved", req.files.modelFile.name);            
-                }); 
-            }
+                    Model3d.save(function(err){
+                        if(err)
+                            throw err;
+                        else
+                            console.log("Model %s has been saved", req.files.modelFile.name);            
+                    }); 
+                }
             else
             {
                 model.desc = "lalalalallalal 3D";
+                model.created = Date.now();
                 console.log("Model %s exists, and has been updated", req.files.modelFile.name);
             }
-        });
-
-            
+            });
             callback(null, "done");
         }], 
-        
         function (err, result) {
             if(err)
                 throw err;
