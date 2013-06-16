@@ -35,6 +35,13 @@ exports.dashboard = function(req, res){
     });
 }
 
+exports.view3D = function(req, res){
+    
+    console.log(req.params.id);
+    console.log("Todo: Send model._id via Ajax to ThreeJS");
+    res.render('threeJS', {title: '3DViewer'});
+}
+
 exports.signup = function(req, res){
 	res.render('signup', { title: 'SignUp', message: req.flash('error')});
 };
@@ -67,10 +74,20 @@ exports.activateuser = function(req, res){
  * POST 
  */
  
- exports.getModel = function(req, res){
+ exports.deleteModel = function(req, res){
  
-    res.send('get Model');
- 
+    console.log(req.body.model_id);
+    console.log("Todo: Delete from DB and FS");
+    res.redirect('back');
+    /*
+    db.UserModel.findById(req.body.model_id, function(err, model){
+        if(err)
+            throw err;
+        else
+            res.redirect('back');
+
+    });
+    */
  
  
  }

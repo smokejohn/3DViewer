@@ -2,18 +2,12 @@ $(document).ready(function() {
 
 	var container, stats;
 	var camera, controls, scene, renderer;
-	var mouseX = 0, mouseY = 0;
-	var windowHalfX = 900 / 2;
-	var windowHalfY = 500 / 2;
 	init();
 	animate();
 
 
 	function init() {
 
-
-        
-        
 		container = document.getElementById('container3D')
 		//container = document.createElement( 'container' );
 		//document.body.appendChild( container );
@@ -31,11 +25,11 @@ $(document).ready(function() {
 		scene.add( ambient );
 
 		var directionalLight = new THREE.DirectionalLight( 0xffeedd );
-		directionalLight.position.set( 0, 0, 1 ).normalize();
+		directionalLight.position.set( 2, 2.5, 1 ).normalize();
 		scene.add( directionalLight );
 
 		// texture
-
+        /*
 		var texture = new THREE.Texture();
 
 		var loader = new THREE.ImageLoader();
@@ -45,8 +39,10 @@ $(document).ready(function() {
 			texture.needsUpdate = true;
 
 		} );
-		loader.load( 'files/textures/ash_uvgrid01.jpg' );
-
+		loader.load( '/files/textures/ash_uvgrid01.jpg' );
+        */
+        
+        
 		// model
 
 		var loader = new THREE.OBJLoader();
@@ -54,7 +50,7 @@ $(document).ready(function() {
 
 			var object = event.content;
 
-			object.traverse( function ( child ) {
+			/*object.traverse( function ( child ) {
 
 				if ( child instanceof THREE.Mesh ) {
 
@@ -63,12 +59,12 @@ $(document).ready(function() {
 				}
 
 			} );
-
+            */
 			object.position.y = -10;
 			scene.add( object );
 
 		});
-		loader.load( 'files/Cube.obj' );
+		loader.load( '/files/Cube.obj' );
 
 		// renderer
 
@@ -88,6 +84,7 @@ $(document).ready(function() {
 	function animate() {
 
 		requestAnimationFrame( animate );
+        renderer.render( scene, camera );
         controls.update();
 		
 	}

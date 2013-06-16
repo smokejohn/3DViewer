@@ -14,6 +14,7 @@ block content
                     th Modelname
                     th created at
                     th direct link
+                    th delete
             tbody
                 for model in models
                     - number++;
@@ -22,5 +23,8 @@ block content
                         td= model.name
                         td= model.created
                         td
-                            form( action="/user/getModel", method="post" )
-                                input(type='submit', value='Show Model').btn.btn-primary
+                            a(href='/user/models/' + model._id).btn.btn-inverse Direct Link
+                        td
+                            form( action='/user/deleteModel', method='post' )
+                                input(type='hidden', name='model_id', value=model._id)
+                                input(type='submit', value='delete').btn.btn-danger

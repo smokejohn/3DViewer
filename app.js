@@ -95,13 +95,14 @@ app.get('/user/logout', currentUser, function(req, res){req.logout(); res.redire
 app.get('/user/activationmail', currentUser, user.activationmail);
 app.get('/user/activate_user/:id', currentUser, user.activateuser);
 app.get('/user/dashboard', currentUser, user.dashboard);
+app.get('/user/models/:id', currentUser, user.view3D);
 
 
 // Post Requests
 app.post('/upload', routes.upload);
 app.post('/user/register', user.register);
 app.post('/user/login', passport.authenticate('local', { successRedirect: '/', failureRedirect: '/user/signin',	failureFlash: true }));
-app.post('/user/getModel', user.getModel);
+app.post('/user/deleteModel', user.deleteModel);
 
 
 
