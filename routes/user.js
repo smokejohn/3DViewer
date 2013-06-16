@@ -22,6 +22,7 @@ exports.list = function(req, res){
 
 };
 
+
 exports.dashboard = function(req, res){
 
 
@@ -65,6 +66,16 @@ exports.activateuser = function(req, res){
 /*
  * POST 
  */
+ 
+ exports.getModel = function(req, res){
+ 
+    res.send('get Model');
+ 
+ 
+ 
+ }
+
+ 
 
 exports.register = function(req, res){
 

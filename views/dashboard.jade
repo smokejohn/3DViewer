@@ -1,6 +1,7 @@
 extends layout
 
 block content
+
     h1= title
     br
     p List of all registered Users
@@ -12,6 +13,7 @@ block content
                     th #
                     th Modelname
                     th created at
+                    th direct link
             tbody
                 for model in models
                     - number++;
@@ -19,3 +21,6 @@ block content
                         td= number
                         td= model.name
                         td= model.created
+                        td
+                            form( action="/user/getModel", method="post" )
+                                input(type='submit', value='Show Model').btn.btn-primary
