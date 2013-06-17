@@ -64,6 +64,7 @@ app.use(express.methodOverride());
 	app.use(flash());
 	app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'files')));
 
 // development only
 if ('development' == app.get('env')) {
@@ -103,7 +104,7 @@ app.post('/upload', routes.upload);
 app.post('/user/register', user.register);
 app.post('/user/login', passport.authenticate('local', { successRedirect: '/', failureRedirect: '/user/signin',	failureFlash: true }));
 app.post('/user/deleteModel', user.deleteModel);
-
+app.post('/user/getModel', user.getModel);
 
 
 http.createServer(app).listen(app.get('port'), function(){

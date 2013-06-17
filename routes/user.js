@@ -38,9 +38,10 @@ exports.dashboard = function(req, res){
 exports.view3D = function(req, res){
     
     console.log(req.params.id);
-    console.log("Todo: Send model._id via Ajax to ThreeJS");
+
     res.render('threeJS', {title: '3DViewer'});
 }
+
 
 exports.signup = function(req, res){
 	res.render('signup', { title: 'SignUp', message: req.flash('error')});
@@ -91,6 +92,32 @@ exports.activateuser = function(req, res){
  
  
  }
+ 
+ exports.getModel = function(req ,res){
+ 
+    console.log("Todo: Send model._id via Ajax to ThreeJS");
+    console.log(req.body.id);
+    console.log(__dirname);
+    
+    
+    db.UserModel.findById(req.body.id, function(err, model){
+        
+        if(err)
+            throw err;
+        else
+        {
+            console.log("SV:getting the ModelPath:");
+            console.log(model.path);
+            // var root = __dirname.substring(0, __dirname.lastIndexOf('routes'));
+            // console.log(root);
+            var path = model.path.substring(model.path.lastIndexOf('/') + 1);
+            console.log(path);
+            res.contentType('json');
+            res.send(JSON.stringify({ path: "/" + path + "/" + model.name }));
+        }
+    });
+    
+}
 
  
 

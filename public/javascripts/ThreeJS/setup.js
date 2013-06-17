@@ -2,8 +2,50 @@ $(document).ready(function() {
 
 	var container, stats;
 	var camera, controls, scene, renderer;
-	init();
+    var path;
+    var url = location.href;
+    getPath();
+	
 	animate();
+    
+   
+    
+    function getPath(){
+    
+    
+        url = url.substring(url.lastIndexOf('/') + 1);
+
+        $.post('/user/getModel', { id: url }).done(function(data){
+            console.log(data.path);
+            path = data.path;
+            init()
+        });
+    
+        /*
+        $.ajax({
+        
+            url: '/user/getModel',
+            type: 'POST',
+            dataType: 'json',
+
+            complete: function(){
+                console.log('CL:process complete');
+            },
+
+            success: function(data){
+                console.log("CL Data: " + data);
+                path = data;
+                console.log('CL:process success');
+            },
+
+            error: function(){
+                console.log('CL:process error');       
+            }
+
+        });
+        */
+     
+    }
 
 
 	function init() {
@@ -64,7 +106,8 @@ $(document).ready(function() {
 			scene.add( object );
 
 		});
-		loader.load( '/files/Cube.obj' );
+		// loader.load( '/' + path );
+		loader.load(path);
 
 		// renderer
 
