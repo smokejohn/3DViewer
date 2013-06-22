@@ -13,7 +13,7 @@ exports.index = function(req, res){
     if (req.user)    
         console.log(req.user._id);
     console.log(res.locals.currentUser);
-    console.log(fs);
+    
 };
 
 exports.upload = function(req, res)
