@@ -18,14 +18,12 @@ html
             span.icon-bar
             span.icon-bar
             span.icon-bar
-          a(href='/').brand Match-System
+          a(href='/').brand #{title}
           div.nav-collapse.collapse
             ul.nav
               li
                 a(href='/users') Userlist
               if currentUser.username
-                li
-                  a(href='/threeJS') 3D Viewer
                 li
                   a(href='/user/dashboard') Dashboard
             ul.nav.pull-right

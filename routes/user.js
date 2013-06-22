@@ -1,6 +1,7 @@
 var db = require("../db");
 var mailer = require("../mailer");
 var async = require("async");
+var fs =  require('fs');
 
 
 /*
@@ -10,7 +11,7 @@ var async = require("async");
 exports.list = function(req, res){
 
 	var query = db.User.find();
-
+    console.log(async);
 	query.select('username email created');
 
     query.exec(function(err, users){
@@ -24,7 +25,6 @@ exports.list = function(req, res){
 
 
 exports.dashboard = function(req, res){
-
 
     db.UserModel.find({ 'owner': req.user._id }, function(err, models){
         if(err)
@@ -78,17 +78,32 @@ exports.activateuser = function(req, res){
  exports.deleteModel = function(req, res){
  
     console.log(req.body.model_id);
-    console.log("Todo: Delete from DB and FS");
-    res.redirect('back');
-    /*
+    
     db.UserModel.findById(req.body.model_id, function(err, model){
         if(err)
             throw err;
-        else
+        else{
+            console.log("found model!");
+            
+            // build up the path where the model is
+            var delPath = model.path + '/' + model.name;
+            console.log(delPath);
+            
+            // delete model from FileSystem
+            fs.unlink(delPath, function(err){
+                if (err)
+                    throw err;
+                else
+                    console.log('modelfile %s deleted', model.name);
+            });
+            
+            // remove Database entry of model
+            model.remove(function(){console.log("DB Entry removed");});
+            
             res.redirect('back');
-
+        }
     });
-    */
+    
  
  
  }
