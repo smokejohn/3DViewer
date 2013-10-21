@@ -12,9 +12,9 @@ function sendMail (usermail, mailbody) {
 	});
 
 	var mailOptions = {
-        from: '3DViewer <3dviwr@gmail.com>',
+        from: 'Responsive3D <3dviwr@gmail.com>',
 		to: usermail,
-		subject: 'register@3DViewer',
+		subject: 'register@responsive3D',
 		text:	mailbody,
 		html: mailbody
 	};

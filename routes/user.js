@@ -12,13 +12,13 @@ exports.list = function(req, res){
 
 	var query = db.User.find();
     console.log(async);
-	query.select('username email created');
+	query.select('username email created registered admin');
 
     query.exec(function(err, users){
 		if (err)
 			throw err;
 		else
-			res.render('users', { title: "Users", users: users });
+			res.render('users', { title: "Responsive 3D", users: users });
     });
 
 };
@@ -30,31 +30,37 @@ exports.dashboard = function(req, res){
         if(err)
             throw err;
         else
-            res.render('dashboard', { title: 'Dashboard', models: models});
+            res.render('dashboard', { title: 'Responsive 3D', models: models});
         
     });
+}
+
+exports.upload = function(req, res){
+    res.render('upload', {title: 'Responsive 3D'});
+
+
 }
 
 exports.view3D = function(req, res){
     
     console.log(req.params.id);
 
-    res.render('threeJS', {title: '3DViewer'});
+    res.render('threeJS', {title: 'Responsive 3D'});
 }
 
 
 exports.signup = function(req, res){
-	res.render('signup', { title: 'SignUp', message: req.flash('error')});
+	res.render('signup', { title: 'Responsive 3D', message: req.flash('error')});
 };
 
 exports.signin = function(req, res){
-	res.render('signin', { title: 'SignIn', message: req.flash('error')});
+	res.render('signin', { title: 'Responsive 3D', message: req.flash('error')});
 	console.log(req.flash('error'));
 };
 
 
 exports.activationmail = function(req, res){
-	res.render('activationmail', {title: '3D-Viewer'});
+	res.render('activationmail', {title: 'Responsive 3D'});
 }
 
 
@@ -68,7 +74,7 @@ exports.activateuser = function(req, res){
 
 	});
 
-	res.render('activateuser', {title: '3D-Viewer'});
+	res.render('activateuser', {title: 'Responsive 3D'});
 }
 
 /*
@@ -182,7 +188,7 @@ exports.register = function(req, res){
 						
 							},
 							function(id, callback){
-								var mailbody = "<h2>Welcome to 3D-Viewer</h2></br></br><p>To finish your registration, click the activation Link below</p></br></br><a href='http://localhost:3000/user/activate_user/" + id +"'>Activation Link</a>";
+								var mailbody = "<h2>Welcome to Responsive 3D</h2></br></br><p>To finish your registration, click the activation Link below</p></br></br><a href='http://localhost:3000/user/activate_user/" + id +"'>Activation Link</a>";
 								mailer.sendMail(req.body.email, mailbody);
 								res.redirect('/user/activationmail');
 								callback(null, 'done');
@@ -199,8 +205,85 @@ exports.register = function(req, res){
 	}
 };
 
+exports.createUser = function(req, res){
 
+    var user = new models.User({
+        username: req.body.username,
+        password: req.body.password,
+        email: req.body.email,
+    });
     
+    if(req.body.registered){
+        user.registered = true;
+    }
+    
+    if(req.body.admin){
+        user.admin = true;
+    }
+    user.save();
+
+}
+
+
+exports.updateUser = function(req, res){
+ 
+    // @Todo: Update Player with new Data;
+    console.log(req.body);
+    console.log(req.body.username);
+    console.log(req.body.registered);
+    
+    db.User.findById(req.body.userId, function(err, user){
+        if(err)
+            throw err;
+        else
+        {
+        
+            if(req.body.username != '')
+                user.username = req.body.username;
+                
+            if(req.body.password != '')
+                user.password = req.body.password;
+                
+            if(req.body.email != '')  
+                user.email = req.body.email;
+                
+            if(req.body.registered != undefined){
+                user.registered = true;
+            }
+            else{
+                user.registered = false;
+            }
+            
+            if(req.body.admin != undefined){
+                user.admin = true;
+            }
+            else{
+                user.admin = false;
+            }
+            
+            user.save();
+        }
+
+        res.redirect('back');
+    });
+    
+ 
+ }
+
+exports.deleteUser = function(req, res){
+    
+    db.User.findById(req.params.id, function(err, user){
+        if(err)
+            throw err;
+        else
+            console.log("deleting user!");
+            user.remove();
+            res.redirect('back');
+    });
+
+ }
+
+
     
 
 

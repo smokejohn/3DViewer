@@ -15,7 +15,8 @@ db.once('open', function callback(){
 		email: { type: String, required: true },
 		registered: { type: Boolean, default: false },
         userpath: { type: String, default: 'files/unregistered'},
-		created: { type: Date, default: Date.now }
+		created: { type: Date, default: Date.now },
+        admin: { type: Boolean, default: false }
        
 	});
 

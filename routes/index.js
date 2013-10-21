@@ -9,12 +9,16 @@ var db = require('../db');
 var async = require('async');
 
 exports.index = function(req, res){
-    res.render('index', { title: '3DViewer', message: req.flash('error')});
+    res.render('index', { title: 'Responsive 3D', message: req.flash('error')});
     if (req.user)    
         console.log(req.user._id);
     console.log(res.locals.currentUser);
     
 };
+
+exports.about = function(req, res){
+    res.render('about', {title: 'Responsive 3D'});
+}
 
 exports.upload = function(req, res)
 {
@@ -141,6 +145,7 @@ exports.upload = function(req, res)
                 model.desc = "lalalalallalal 3D";
                 model.created = Date.now();
                 console.log("Model %s exists, and has been updated", req.files.modelFile.name);
+                model.save();
             }
             });
             callback(null, "done");
@@ -175,5 +180,5 @@ exports.uploaded = function(req, res)
 
 exports.threeJS = function(req, res)
 {
-    res.render('threeJS', {title: '3DViewer'});
+    res.render('threeJS', {title: 'Responsive 3D'});
 }

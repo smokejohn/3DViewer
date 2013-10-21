@@ -1,0 +1,21 @@
+extends layout
+
+block content
+    div.row-fluid
+        div.hero-unit.span12
+            div.span8.pull-left
+                h3 Upload a new model
+                h5 Choose a file from your harddrive
+                h5 We only support .OBJ-Files at the moment
+                div.spacer4
+                div.thumbnail.center.well.well-small.text-center
+                    form(action="/upload", method="post", enctype="multipart/form-data")
+                        fieldset
+                            div.spacer2
+                            div.row-fluid
+                                div.span6
+                                    input(type="file", name="modelFile", value="Choose File")
+                                div.span6
+                                    input.btn.btn-primary(type="submit", value="Send File")                               
+
+

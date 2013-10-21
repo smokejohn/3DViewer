@@ -88,6 +88,7 @@ currentUser = function (req, res, next)
 
 // Get Requests
 app.get('/', currentUser, routes.index);
+app.get('/about', currentUser, routes.about);
 app.get('/users', currentUser, user.list);
 app.get('/uploaded', currentUser, routes.uploaded);
 app.get('/threeJS', currentUser, routes.threeJS);
@@ -98,7 +99,10 @@ app.get('/user/activationmail', currentUser, user.activationmail);
 app.get('/user/activate_user/:id', currentUser, user.activateuser);
 app.get('/user/dashboard', currentUser, user.dashboard);
 app.get('/user/models/:id', currentUser, user.view3D);
+app.get('/user/upload', currentUser, user.upload);
 
+app.get('/user/delete/:id', user.deleteUser);
+app.post('/user/updateuser', user.updateUser);
 
 // Post Requests
 app.post('/upload', routes.upload);

@@ -7,9 +7,55 @@ a {
   color: #00B7FF;
 }
 
-#container3D {
-	width: 900px;
-	height: 500px;
-	border: 3px solid black;
+#container3D
+{
+    position: absolute;
+    left: 0;
+    top: 0;
 }
 
+#guiContainer
+{
+    position: absolute;
+    right: 0;
+    top: 48px;
+
+}
+
+.dg .c .slider-fg {
+    background: #c15634 !important;
+}
+
+.dg .cr.number input[type=text] {
+    color: #c15634 !important;
+}
+
+.dg .cr.number {
+    border-left: 3px solid #c15634 !important;
+}
+
+canvas
+{
+    border-width: 0px;
+
+}
+
+.spacer1 {
+    margin-top: 10px;
+}
+
+.spacer2 {
+    margin-top: 20px;
+}
+
+.spacer3 {
+    margin-top: 30px;
+}
+
+.spacer4 {
+    margin-top: 40px;
+}
+
+.spacer5 {
+    margin-top: 50px;
+}

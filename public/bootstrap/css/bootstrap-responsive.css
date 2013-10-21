@@ -1019,7 +1019,7 @@
   .nav-collapse .nav > li > a:focus,
   .nav-collapse .dropdown-menu a:hover,
   .nav-collapse .dropdown-menu a:focus {
-    background-color: #f2f2f2;
+    background-color: #111111;
   }
   .navbar-inverse .nav-collapse .nav > li > a,
   .navbar-inverse .nav-collapse .dropdown-menu a {
@@ -1080,7 +1080,7 @@
   }
   .navbar-inverse .nav-collapse .navbar-form,
   .navbar-inverse .nav-collapse .navbar-search {
-    border-top-color: #111111;
+    border-top-color: #000000;
     border-bottom-color: #111111;
   }
   .navbar .nav-collapse .nav.pull-right {

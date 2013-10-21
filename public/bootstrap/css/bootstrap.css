@@ -1,4 +1,4 @@
-/*!
+
  * Bootstrap v2.3.2
  *
  * Copyright 2012 Twitter, Inc
@@ -7,11 +7,25 @@
  *
  * Designed and built with all the love in the world @twitter by @mdo and @fat.
  */
+#login{
+  margin: 0 auto !important;
 
+}
 .clearfix {
   *zoom: 1;
 }
+  .container-main {
+    margin-top: 75px;
+  }
 
+  .container-canvas {
+    margin: 0 auto;
+    width: 800px;
+  }
+
+  canvas {
+    border: 20px solid #333;
+  }
 .clearfix:before,
 .clearfix:after {
   display: table;
@@ -221,13 +235,15 @@ textarea {
   }
 }
 
-body {
+body {  
+  padding-top:40px;
   margin: 0;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 20px;
-  color: #333333;
-  background-color: #ffffff;
+  color: #BDBDBD;
+
+  background-color:#1C1C1C;
 }
 
 a {
@@ -2180,9 +2196,11 @@ table th[class*="span"],
 
 .table td.span4,
 .table th.span4 {
+  
   float: none;
   width: 284px;
   margin-left: 0;
+
 }
 
 .table td.span5,
@@ -3120,6 +3138,7 @@ table th[class*="span"],
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
      -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
           box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+  color: #1c1c1c;
 }
 
 .well blockquote {
@@ -3581,8 +3600,8 @@ input[type="submit"].btn.btn-small {
 
 button.btn.btn-mini,
 input[type="submit"].btn.btn-mini {
-  *padding-top: 1px;
-  *padding-bottom: 1px;
+  *padding-top: 0px;
+  *padding-bottom: 0px;
 }
 
 .btn-link,
@@ -3607,7 +3626,12 @@ input[type="submit"].btn.btn-mini {
 .btn-link:hover,
 .btn-link:focus {
   color: #005580;
-  text-decoration: underline;
+
+
+
+
+
+
   background-color: transparent;
 }
 
@@ -4370,6 +4394,7 @@ input[type="submit"].btn.btn-mini {
 }
 
 .navbar-inner {
+
   min-height: 40px;
   padding-right: 20px;
   padding-left: 20px;
@@ -4791,7 +4816,7 @@ input[type="submit"].btn.btn-mini {
 }
 
 .navbar-inverse .navbar-inner {
-  background-color: #1b1b1b;
+  background-color: #111111;
   background-image: -moz-linear-gradient(top, #222222, #111111);
   background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#222222), to(#111111));
   background-image: -webkit-linear-gradient(top, #222222, #111111);
@@ -4943,7 +4968,7 @@ input[type="submit"].btn.btn-mini {
 
 .navbar-inverse .btn-navbar:active,
 .navbar-inverse .btn-navbar.active {
-  background-color: #000000 \9;
+  background-color: #111111 \9;
 }
 
 .breadcrumb {
@@ -5217,6 +5242,7 @@ input[type="submit"].btn.btn-mini {
   -webkit-background-clip: padding-box;
      -moz-background-clip: padding-box;
           background-clip: padding-box;
+  color: #1c1c1c;
 }
 
 .modal.fade {
@@ -5426,7 +5452,7 @@ input[type="submit"].btn.btn-mini {
 .popover-title {
   padding: 8px 14px;
   margin: 0;
-  font-size: 14px;
+  font-size: 20px;
   font-weight: normal;
   line-height: 18px;
   background-color: #f7f7f7;
@@ -6123,8 +6149,12 @@ a.badge:focus {
   font-size: 18px;
   font-weight: 200;
   line-height: 30px;
-  color: inherit;
-  background-color: #eeeeee;
+
+  color: #000000;
+  background-image: url(../img/un-1.png);
+  background-repeat: no-repeat;
+  background-color:#FFFFFF ;
+ 
   -webkit-border-radius: 6px;
      -moz-border-radius: 6px;
           border-radius: 6px;

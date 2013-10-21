@@ -1,23 +1,85 @@
 extends layout
 
+
+
 block content
-	h1= title
-	br
-	p List of all registered Users
-	- var number = 0;
-	div.well
-		table.table
-			thead
-				tr
-					th #
-					th Username
-					th E-Mail
-					th created at
-			tbody
-				for user in users
-					- number++;
-					tr
-						td= number
-						td= user.username
-						td= user.email
-						td= user.created
+
+    script(src='/javascripts/userUpdate_getId.js')
+    div.row-fluid
+        div#updateModal.modal.hide.fade( tabindex="-1", role="dialog", aria-labelledby="updateModalLabel", aria-hidden="true")
+            div.modal-header
+                button(type="button", data-dismiss="modal", aria-hidden="true").close ×
+                h3#updateModalLabel Update User
+
+            div.modal-body
+                form(action="/user/updateuser", method="post").form-horizontal
+                    fieldset
+                        div.control-group
+                            input(id="username", name="username", type="text", placeholder="Username").input-xlarge
+                        div.control-group
+                            input(id="password", name="password", type="password", placeholder="Password").input-xlarge
+                        div.control-group
+                            input(id="email", name="email", type="text", placeholder="E-Mail").input-xlarge
+                        div.control-group
+                            input(id="UserId", name="userId", type="hidden", value="test")#UserId
+                        div.control-group
+                            label.checkbox is registered
+                                input(type="checkbox", name="registered", value="true", checked)
+                            label.checkbox is admin
+                                input(type="checkbox", name="admin", value="true")
+                        div.control-group
+                            input(type="submit", value="Save Changes").btn.btn-primary
+                        
+            div.modal-footer
+                button(data-dismiss="modal", aria-hidden="true").btn Close
+
+
+        div#deleteModal.modal.hide.fade( tabindex="-1", role="dialog", aria-labelledby="deleteModalLabel", aria-hidden="true")
+            div.modal-header
+                button(type="button", data-dismiss="modal", aria-hidden="true").close ×
+                h3#deleteModalLabel Delete User
+
+            div.modal-body
+                p Are you sure you want to delete this user?
+                br
+                a(href='/user/delete/' + #{user._id})#DelUserId.btn.btn-danger Yes
+                button(data-dismiss="modal", aria-hidden="true").btn No
+
+            div.modal-footer
+                button(data-dismiss="modal", aria-hidden="true").btn Close
+
+        h1 Userlist
+        div.spacer5
+        p List of all registered users.
+        - var number = 0;
+        div.well
+            table.table
+                thead
+                    tr
+                        th #
+                        th Username
+                        th E-Mail
+                        th User ID
+                        th Creation date
+                        th Registered
+                        th Admin
+                        th(style="width: 40px;")
+                tbody
+                    for user in users
+                        - number++;
+                        tr
+                            td= number
+                            td= user.username
+                            td= user.email
+                            td= user._id         
+                            td= user.created.toDateString()
+                            td= user.registered
+                            td= user.admin
+                            td
+                                a(href="#updateModal", role="button", data-toggle="modal", data-id= '#{user._id}').openForm
+                                    i.icon-pencil
+                                a(href="#deleteModal", role="button", data-toggle="modal", data-id= '#{user._id}').openForm
+                                    i.icon-remove
+        //                      a(href='/user/delete/' + user._id , role="button")
+        //                          i.icon-remove
+                

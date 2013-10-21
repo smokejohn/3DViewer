@@ -4,8 +4,8 @@ html
     title=title
     //link(rel='stylesheet', href='/stylesheets/style.css')
     // Bootstrap
-    link(rel='stylesheet', href='/bootstrap/css/bootstrap.min.css')
-    link(rel='stylesheet', href='/bootstrap/css/bootstrap-responsive.min.css')
+    link(rel='stylesheet', href='/bootstrap/css/bootstrap.css')
+    link(rel='stylesheet', href='/bootstrap/css/bootstrap-responsive.css')
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
     script(src='/javascripts/jquery-1.10.0.min.js')
@@ -18,14 +18,19 @@ html
             span.icon-bar
             span.icon-bar
             span.icon-bar
-          a(href='/').brand #{title}
+          a(href='/').brand
+            img(src='/img/resp3D_icon.png', width='26', height='26')
+            &nbsp&nbsp#{title}
           div.nav-collapse.collapse
             ul.nav
-              li
-                a(href='/users') Userlist
+              if currentUser.admin
+                li
+                  a(href='/users') Userlist
               if currentUser.username
                 li
                   a(href='/user/dashboard') Dashboard
+                li
+                  a(href='/user/upload') Upload
             ul.nav.pull-right
               if currentUser.username
                 li.dropdown
@@ -36,9 +41,12 @@ html
                       a(href='/user/logout') Logout
               else
                 li
-                  a(href='/user/signup') Sign up
+                  a(href='/') Home
+                li
+                  a(href='/about') About
                 li
                   a(href='/user/signin') Sign in
     div.container
       div.content
+        br
         block content
