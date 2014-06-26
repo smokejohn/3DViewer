@@ -22,7 +22,6 @@ exports.about = function(req, res){
 
 exports.upload = function(req, res)
 {
-
     async.waterfall([
     
         function(callback){
@@ -104,7 +103,8 @@ exports.upload = function(req, res)
                     // delete file in tmp path
                     fs.unlink(tmp_path, function(err){
                         if (err) throw err;
-                        res.send('File uploaded to: ' + target_path + ' - ' + req.files.modelFile.size + ' bytes');
+                        //res.send('File uploaded to: ' + target_path + ' - ' + req.files.modelFile.size + ' bytes');
+                        res.redirect('/user/dashboard');
                     });
                 });
             }
@@ -130,7 +130,7 @@ exports.upload = function(req, res)
                         name: req.files.modelFile.name,
                         owner: req.user._id,
                         path: userpath,
-                        desc: "lalallalalalala 3D",
+                        desc: req.body.modelDesc,
                         created: Date.now() });
                             
                     Model3d.save(function(err){
@@ -142,7 +142,7 @@ exports.upload = function(req, res)
                 }
             else
             {
-                model.desc = "lalalalallalal 3D";
+                model.desc = req.body.modelDesc;
                 model.created = Date.now();
                 console.log("Model %s exists, and has been updated", req.files.modelFile.name);
                 model.save();

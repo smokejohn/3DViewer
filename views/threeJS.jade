@@ -15,20 +15,19 @@ block content
     
 
     script(type="x-shader/x-vertex")#vertShader.
-        uniform float scale;
-        uniform vec3 dirLightPos;
-        varying vec3 N;
-        varying vec3 L;
-        varying vec3 V;
+        uniform vec3 udirLightPos;
+        varying vec3 n;
+        varying vec3 l;
+        varying vec3 v;
 
 
         void main()
         {
             vec3 pos = position;
-            vec4 mvPos = modelViewMatrix * vec4(scale * pos, 1.0);
-            N = normalize(normal);
-            L = normalize(dirLightPos);
-            V = normalize(cameraPosition - position);
+            vec4 mvPos = modelViewMatrix * vec4(pos, 1.0);
+            n = normal;
+            l = udirLightPos;
+            v = cameraPosition - position;
             gl_Position = projectionMatrix * mvPos;        
 
         }
@@ -40,23 +39,39 @@ block content
         precision highp float;
 
         #endif
-        uniform float FresnelExponent;
-        uniform float FresnelIntensity;
-        uniform vec3 FresnelColor;
-        uniform vec3 DiffuseColor;
-        varying vec3 N;
-        varying vec3 L;
-        varying vec3 V;
+        uniform float uFresnelExponent;
+        uniform float uFresnelIntensity;
+        uniform float uSpecularExponent;
+        uniform vec3 uFresnelColor;
+        uniform vec3 uDiffuseColor;
+        uniform vec3 uSpecularColor;
+        varying vec3 n;
+        varying vec3 l;
+        varying vec3 v;
         
 
         void main(void)
         {
+            
+            // normalizing all vectors per pixel (Per Pixel Lighting);
+            vec3 N = normalize(n);
+            vec3 L = normalize(l);
+            vec3 V = normalize(v);
 
+            // Half-Lambertian Term
             float Lambert = max(0.0, pow((dot(N, L) * 0.5) + 0.5, 2.0));
+            //float Lambert = max(0.0, dot(N, L));
             
-            
-            float Fresnel = pow((1.0 - dot(V, N)) * FresnelIntensity, FresnelExponent);
-            vec4 Color = vec4(DiffuseColor, 1.0) * vec4(Lambert, Lambert, Lambert, 1.0) + (vec4(Fresnel, Fresnel, Fresnel, 1.0)* vec4(FresnelColor, 1.0));
+            // Reflect Vector
+            vec3 R = -reflect(L, N);
+            float rDotv = max(0.0, dot(R, V));
+            vec3 Specular =  pow(rDotv, uSpecularExponent) * uSpecularColor;
+
+            // Fresnel Term
+            float Fresnel = pow((1.0 - dot(V, N)) * uFresnelIntensity, uFresnelExponent);
+
+            // Final Color Output
+            vec4 Color = vec4(uDiffuseColor, 1.0) * vec4(Lambert, Lambert, Lambert, 1.0) + vec4(Specular, 1.0) + (vec4(Fresnel, Fresnel, Fresnel, 1.0)* vec4(uFresnelColor, 1.0));
             gl_FragColor = Color;
 
         }
@@ -67,7 +82,17 @@ block content
         body {
             overflow: hidden;
         }
+        .content{
+            height: 0px !important;
+
+        }
      
     div#container3D
     div#guiContainer
+    div#descContainer
+        - var modelname = model.name.substring(0, model.name.indexOf('.'));
+        h4= modelname
+        p
+            i= model.desc
+
     

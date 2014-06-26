@@ -43,9 +43,17 @@ exports.upload = function(req, res){
 
 exports.view3D = function(req, res){
     
-    console.log(req.params.id);
+    console.log('SV: view3D Route: ' + req.params.id);
+    
+    db.UserModel.findById(req.params.id, function(err, model){
+        if(err)
+            throw err;
+        else
+            res.render('threeJS', {title: 'Responsive 3D', model: model});
+    
+    })
 
-    res.render('threeJS', {title: 'Responsive 3D'});
+    
 }
 
 

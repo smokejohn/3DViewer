@@ -5,16 +5,30 @@ $(document).ready(function() {
     SCREEN_WIDTH_HALF = SCREEN_WIDTH  / 2,
     SCREEN_HEIGHT_HALF = SCREEN_HEIGHT / 2;
     
+    //grid
+    var GL_Length = 100;
+    var GridUnit = 10;
+        
+    var GridMat = new THREE.LineBasicMaterial({
+        color: 0x2f2f2f,
+
+    });
+    
     var Parameters = function(){
     
         this.DL_X = 1.0;
         this.DL_Y = 1.0;
         this.DL_Z = 1.0;
-        this.DiffuseColor = [193, 86, 52];
-        this.FresnelColor = [255, 255, 255];
+        this.DiffuseColor = '#c15634';
+        this.FresnelColor = '#ffffff';
         this.FresnelIntensity = 0.75;
         this.FresnelExponent = 3.0;
-    }
+        this.SpecularColor = '#808080';
+        this.SpecularExponent = 20.0;
+        this.ClearColor = '#1c1c1c';
+        this.GridColor = '#2f2f2f';
+        this.Grid = false;
+    };
     
     var Params = new Parameters();
     
@@ -27,6 +41,11 @@ $(document).ready(function() {
         this.FC;
         this.FE;
         this.FI;
+        this.SC;
+        this.SE;
+        this.CC;
+        this.GC;
+        this.G;
     }
     
     var C = new Controller();
@@ -40,14 +59,13 @@ $(document).ready(function() {
     var url = location.href;
     var attributes = {};
     var uniforms = {
-        scale: {type: 'f', value: 1.0},
-        dirLightPos: {type: 'v3', value: new THREE.Vector3(Params.DL_X, Params.DL_Y, Params._DL_Z)},
-        DiffuseColor: {type: 'v3', value: new THREE.Vector3(Params.DiffuseColor[0]/255, Params.DiffuseColor[1]/255, Params.DiffuseColor[2]/255)},
-        FresnelColor: {type: 'v3', value: new THREE.Vector3(Params.FresnelColor[0]/255, Params.FresnelColor[1]/255, Params.FresnelColor[2]/255)},
-        FresnelIntensity: {type: 'f', value: Params.FresnelIntensity},
-        FresnelExponent: {type: 'f', value: Params.FresnelExponent}
-    
-    
+        udirLightPos: {type: 'v3', value: new THREE.Vector3(Params.DL_X, Params.DL_Y, Params._DL_Z)},
+        uDiffuseColor: {type: 'v3', value: new THREE.Vector3(Params.DiffuseColor[0]/255, Params.DiffuseColor[1]/255, Params.DiffuseColor[2]/255)},
+        uFresnelColor: {type: 'v3', value: new THREE.Vector3(Params.FresnelColor[0]/255, Params.FresnelColor[1]/255, Params.FresnelColor[2]/255)},
+        uFresnelIntensity: {type: 'f', value: Params.FresnelIntensity},
+        uFresnelExponent: {type: 'f', value: Params.FresnelExponent},
+        uSpecularColor: {type: 'v3', value: new THREE.Vector3(Params.SpecularColor[0]/255, Params.SpecularColor[1]/255, Params.SpecularColor[2]/255)},
+        uSpecularExponent: {type: 'f', value: Params.SpecularExponent}   
     };
     getPath();
 	
@@ -101,8 +119,14 @@ $(document).ready(function() {
 		//document.body.appendChild( container );
 		camera = new THREE.PerspectiveCamera( 45, SCREEN_WIDTH / SCREEN_HEIGHT, 1, 2000 );
 		camera.position.z = 150;
+		camera.position.y = 100;
         
+        //init problem Variables
+ 
         
+        uniforms['uDiffuseColor'].value.set(193/255, 86/255, 53/255);
+        uniforms['uFresnelColor'].value.set(255/255, 255/255, 255/255);
+        uniforms['uSpecularColor'].value.set(128/255, 128/255, 128/255);
         //*************************
         //DAT.GUI
         //*************************
@@ -124,6 +148,14 @@ $(document).ready(function() {
         C.FC = f2.addColor(Params, 'FresnelColor');
         C.FI = f2.add(Params, 'FresnelIntensity', 0.0, 1.0);
         C.FE = f2.add(Params, 'FresnelExponent', 1.0, 8.0);
+        C.SC = f2.addColor(Params, 'SpecularColor');
+        C.SE = f2.add(Params, 'SpecularExponent', 0.1, 255.0);
+        
+        var f3 = gui.addFolder('Scene');
+        C.CC = f3.addColor(Params, 'ClearColor');
+        C.G = f3.add(Params, 'Grid');
+        C.GC = f3.addColor(Params, 'GridColor');
+        
         
 		// scene
 		scene = new THREE.Scene();
@@ -150,6 +182,7 @@ $(document).ready(function() {
 		loader.load( '/files/textures/ash_uvgrid01.jpg' );
         */
         
+        // shader
         var vertShader = $('#vertShader').text();
         var fragShader = $('#fragShader').text();
         
@@ -189,11 +222,34 @@ $(document).ready(function() {
         
         window.addEventListener('resize', onWindowResize, false);
         
+        
+
+        
+        
+        
+        for( var i = -10; i <= 10; i++){
+        var GridGeoX = new THREE.Geometry();
+            GridGeoX.vertices.push(new THREE.Vector3(-100, 0, 10 * i));
+            GridGeoX.vertices.push(new THREE.Vector3(100, 0, 10 * i));
+        
+        var GridGeoZ = new THREE.Geometry();
+            GridGeoZ.vertices.push(new THREE.Vector3(10 * i, 0, -100));
+            GridGeoZ.vertices.push(new THREE.Vector3(10 * i, 0, 100));
+
+        var GridLineX = new THREE.Line(GridGeoX, GridMat);
+        var GridLineZ = new THREE.Line(GridGeoZ, GridMat);
+        
+        scene.add(GridLineX);
+        scene.add(GridLineZ);
+        
+        }
+        
 		// renderer
 
 		renderer = new THREE.WebGLRenderer();
-		renderer.setSize( SCREEN_WIDTH, SCREEN_HEIGHT );
-		renderer.setClearColor(0x1c1c1c, 1);
+		renderer.setSize( SCREEN_WIDTH, SCREEN_HEIGHT);
+		//renderer.setClearColor(0x1c1c1c, 1);
+		//renderer.setClearColor(new THREE.Color().setRGB(255, 0, 0), 1);
         
 		container.appendChild( renderer.domElement );
         controls = new THREE.TrackballControls( camera, renderer.domElement);
@@ -211,32 +267,56 @@ $(document).ready(function() {
         controls.update();
         
         C.DL_X.onChange(function(value) {
-            uniforms['dirLightPos'].value.setX(value);
+            uniforms['udirLightPos'].value.setX(value);
         });
         C.DL_Y.onChange(function(value) {
-            uniforms['dirLightPos'].value.setY(value);
+            uniforms['udirLightPos'].value.setY(value);
         });
         C.DL_Z.onChange(function(value) {
-            uniforms['dirLightPos'].value.setZ(value);
+            uniforms['udirLightPos'].value.setZ(value);
         });
         
         C.DC.onChange(function(value) {
-            //console.log(value);
-            uniforms['DiffuseColor'].value.set(value[0]/255, value[1]/255, value[2]/255);
+            var color = new THREE.Color().setHex("0x" + value.substring(1, 7));
+            uniforms['uDiffuseColor'].value.set(color.r, color.g, color.b);
         });
         
         C.FC.onChange(function(value) {
-            //console.log(value);
-            uniforms['FresnelColor'].value.set(value[0]/255, value[1]/255, value[2]/255);
+          var color = new THREE.Color().setHex("0x" + value.substring(1, 7));
+            uniforms['uFresnelColor'].value.set(color.r, color.g, color.b);
         });
         
         C.FI.onChange(function(value) {
-            //console.log(value);
-            uniforms['FresnelIntensity'].value = value;
-        });  
+          
+            uniforms['uFresnelIntensity'].value = value;
+        }); 
+        
         C.FE.onChange(function(value) {
-            //console.log(value);
-            uniforms['FresnelExponent'].value = value;
+           
+            uniforms['uFresnelExponent'].value = value;
+        }); 
+        
+        C.SC.onChange(function(value) {
+            var color = new THREE.Color().setHex("0x" + value.substring(1, 7));
+            uniforms['uSpecularColor'].value.set(color.r, color.g, color.b);
+        }); 
+        
+        C.SE.onChange(function(value) {
+          
+            uniforms['uSpecularExponent'].value = value;
+        }); 
+        
+        C.CC.onChange(function(value) {
+            var color = new THREE.Color().setHex("0x" + value.substring(1, 7));
+            renderer.setClearColor(color.getHex(), 1);
+        }); 
+        
+        C.G.onFinishChange(function(value) {
+            console.log( 'implement adding and deleting of Grid' );
+        }); 
+        
+        C.GC.onChange(function(value) {
+            GridMat.color.setHex("0x" + value.substring(1, 7));
         }); 
         
         directionalLight.position.set( dirL_x, dirL_y, dirL_z ).normalize();
@@ -254,7 +334,7 @@ $(document).ready(function() {
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
 
-        renderer.setSize( window.innerWidth, window.innerHeight );
+        renderer.setSize( window.innerWidth, window.innerHeight);
 
     }
     

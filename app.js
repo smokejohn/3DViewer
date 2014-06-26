@@ -80,7 +80,7 @@ currentUser = function (req, res, next)
 	}
     else
     {
-        res.locals.currentUser = req.user;    
+        res.locals.currentUser = req.user;
     }
 	next();
 }

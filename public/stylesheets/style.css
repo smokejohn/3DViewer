@@ -19,6 +19,14 @@ a {
     position: absolute;
     right: 0;
     top: 48px;
+}
+
+
+#descContainer
+{
+    position: absolute;
+    left: 50px;
+    top: 68px;
 
 }
 
@@ -31,6 +39,10 @@ a {
 }
 
 .dg .cr.number {
+    border-left: 3px solid #c15634 !important;
+}
+
+.dg .cr.boolean{
     border-left: 3px solid #c15634 !important;
 }
 

@@ -3,19 +3,21 @@ extends layout
 block content
     div.row-fluid
         div.hero-unit.span12
-            div.span8.pull-left
+            div.span6.pull-left
                 h3 Upload a new model
                 h5 Choose a file from your harddrive
                 h5 We only support .OBJ-Files at the moment
                 div.spacer4
-                div.thumbnail.center.well.well-small.text-center
+                div.well
                     form(action="/upload", method="post", enctype="multipart/form-data")
                         fieldset
                             div.spacer2
-                            div.row-fluid
-                                div.span6
-                                    input(type="file", name="modelFile", value="Choose File")
-                                div.span6
-                                    input.btn.btn-primary(type="submit", value="Send File")                               
+                            label ModelFile(OBJ.)
+                            input(type="file", name="modelFile", value="Choose File")
+                            div.spacer2
+                            label Model Description
+                            textarea(id="modelDesc", name="modelDesc", cols="35", rows="5")
+                            div.spacer2
+                            input.btn.btn-primary(type="submit", value="Send File")                               
 
 
