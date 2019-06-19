@@ -19,7 +19,7 @@ Implementation of a 3D-Viewer NodeJS app, using Express, MongoDB, Mongoose and T
   * modellist
 
 
-## Technologie
+## Technology
 
 * Express JS
 * mongoDB (www.mongodb.org) / levelDB
@@ -27,8 +27,6 @@ Implementation of a 3D-Viewer NodeJS app, using Express, MongoDB, Mongoose and T
 * Jade - HTML Templating-Engine
 * passport sigin module / auth module
 
-
-## Zeitplan
 
 ### Milestone 1 (28. May 2013)
 
